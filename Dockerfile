@@ -4,7 +4,7 @@
 # base notebook, contains Jupyter and relevant tools
 # See https://github.com/ucsd-ets/datahub-docker-stack/wiki/Stable-Tag 
 # for a list of the most current containers we maintain
-ARG BASE_CONTAINER=ghcr.io/ucsd-ets/datascience-notebook:stable
+ARG BASE_CONTAINER=ghcr.io/ucsd-ets/rstudio-notebook:stable
 
 FROM $BASE_CONTAINER
 
@@ -21,6 +21,11 @@ USER jovyan
 # RUN conda install -y scikit-learn
 
 RUN pip install --no-cache-dir networkx scipy
+
+# Install R packages
+RUN R -e "install.packages(c('ottr'), repos='https://cloud.r-project.org')" && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 # Override command to disable running jupyter notebook at launch
 # CMD ["/bin/bash"]
