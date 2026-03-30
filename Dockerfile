@@ -14,7 +14,7 @@ LABEL maintainer="UC San Diego ITS/ETS <ets-consult@ucsd.edu>"
 USER root
 
 # Install R packages
-RUN R -e "install.packages(c('sf', 'markdown', 'covr', 'git2r', 'crosstalk', 'DT'), repos='https://cloud.r-project.org')" && \
+RUN R -e "install.packages(c('ottr'), repos='https://cloud.r-project.org')" && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
