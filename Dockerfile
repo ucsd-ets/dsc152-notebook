@@ -13,6 +13,11 @@ LABEL maintainer="UC San Diego ITS/ETS <ets-consult@ucsd.edu>"
 # 2) change to root to install packages
 USER root
 
+# Install R packages
+RUN R -e "install.packages(c('sf', 'markdown', 'covr', 'git2r', 'crosstalk', 'DT'), repos='https://cloud.r-project.org')" && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
 RUN apt-get -y install htop
 
 # 3) install packages using notebook user
@@ -21,11 +26,6 @@ USER jovyan
 # RUN conda install -y scikit-learn
 
 RUN pip install --no-cache-dir networkx scipy
-
-# Install R packages
-RUN R -e "install.packages(c('ottr'), repos='https://cloud.r-project.org')" && \
-    fix-permissions $CONDA_DIR && \
-    fix-permissions /home/$NB_USER
 
 # Override command to disable running jupyter notebook at launch
 # CMD ["/bin/bash"]
